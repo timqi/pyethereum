@@ -1,6 +1,6 @@
 # -*- coding: utf8 -*-
 import rlp
-from bitcoin import encode_pubkey, N, encode_privkey
+from pybitcoin import encode_pubkey, N, encode_privkey
 from rlp.sedes import big_endian_int, binary
 from rlp.utils import encode_hex, str_to_bytes, ascii_chr
 from secp256k1 import PublicKey, ALL_FLAGS, PrivateKey

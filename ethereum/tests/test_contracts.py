@@ -1,7 +1,7 @@
 # -*- coding: utf8 -*-
 import os
 
-import bitcoin
+import pybitcoin
 from secp256k1 import PrivateKey
 import pytest
 import serpent
@@ -936,12 +936,12 @@ def test_saveload():
     s = tester.state()
     c = s.abi_contract(saveload_code)
     o = c.kall()
-    assert o[0] == 0x73697220626f62616c6f7420746f207468652072657363756520212131213121, bitcoin.encode(o[0], 16)
-    assert o[1] == 0x2131213100000000000000000000000000000000000000000000000000000000, bitcoin.encode(o[1], 16)
-    assert o[2] == 0x73697220626f62616c6f7420746f207468652072657363756520212131213121, bitcoin.encode(o[2], 16)
-    assert o[3] == 0x2131213100000000000000000000000000000000000000000000000000000000, bitcoin.encode(o[3], 16)
-    assert o[4] == 0x73697220626f62616c6f7420746f207468652072657363756520212131213121, bitcoin.encode(o[4], 16)
-    assert o[5] == 0x2100000000000000000000000000000000000000000000000000000000000000, bitcoin.encode(o[5], 16)
+    assert o[0] == 0x73697220626f62616c6f7420746f207468652072657363756520212131213121, pybitcoin.encode(o[0], 16)
+    assert o[1] == 0x2131213100000000000000000000000000000000000000000000000000000000, pybitcoin.encode(o[1], 16)
+    assert o[2] == 0x73697220626f62616c6f7420746f207468652072657363756520212131213121, pybitcoin.encode(o[2], 16)
+    assert o[3] == 0x2131213100000000000000000000000000000000000000000000000000000000, pybitcoin.encode(o[3], 16)
+    assert o[4] == 0x73697220626f62616c6f7420746f207468652072657363756520212131213121, pybitcoin.encode(o[4], 16)
+    assert o[5] == 0x2100000000000000000000000000000000000000000000000000000000000000, pybitcoin.encode(o[5], 16)
 
 
 saveload_code2 = """
@@ -958,8 +958,8 @@ def test_saveload2():
     s = tester.state()
     c = s.contract(saveload_code2)
     s.send(tester.k0, c, 0)
-    assert bitcoin.encode(s.block.get_storage_data(c, 0), 256) == b'01ab' + b'\x00' * 28
-    assert bitcoin.encode(s.block.get_storage_data(c, 1), 256) == b'01ab' + b'\x00' * 28
+    assert pybitcoin.encode(s.block.get_storage_data(c, 0), 256) == b'01ab' + b'\x00' * 28
+    assert pybitcoin.encode(s.block.get_storage_data(c, 1), 256) == b'01ab' + b'\x00' * 28
 
 
 sdiv_code = """
@@ -1199,7 +1199,7 @@ def test_ecrecover():
     c = s.abi_contract(ecrecover_code)
 
     priv = utils.sha3('some big long brainwallet password')
-    pub = bitcoin.privtopub(priv)
+    pub = pybitcoin.privtopub(priv)
 
     msghash = utils.sha3('the quick brown fox jumps over the lazy dog')
 
@@ -1212,9 +1212,9 @@ def test_ecrecover():
     R = big_endian_to_int(signature[0:32])
     S = big_endian_to_int(signature[32:64])
 
-    assert bitcoin.ecdsa_raw_verify(msghash, (V, R, S), pub)
+    assert pybitcoin.ecdsa_raw_verify(msghash, (V, R, S), pub)
 
-    addr = utils.big_endian_to_int(utils.sha3(bitcoin.encode_pubkey(pub, 'bin')[1:])[12:])
+    addr = utils.big_endian_to_int(utils.sha3(pybitcoin.encode_pubkey(pub, 'bin')[1:])[12:])
     assert utils.big_endian_to_int(utils.privtoaddr(priv)) == addr
 
     result = c.test_ecrecover(utils.big_endian_to_int(msghash), V, R, S)

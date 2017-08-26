@@ -1,5 +1,5 @@
 # -*- coding: utf8 -*-
-import bitcoin
+import pybitcoin
 from rlp.utils import ascii_chr
 from secp256k1 import PublicKey, ALL_FLAGS
 
@@ -27,7 +27,7 @@ def proc_ecrecover(ext, msg):
     r = msg.data.extract32(64)
     s = msg.data.extract32(96)
 
-    if r >= bitcoin.N or s >= bitcoin.N or v < 27 or v > 28:
+    if r >= pybitcoin.N or s >= pybitcoin.N or v < 27 or v > 28:
         return 1, msg.gas - opcodes.GECRECOVER, []
 
     signature_bytes = [0] * 64
@@ -62,7 +62,7 @@ def proc_sha256(ext, msg):
     if msg.gas < gas_cost:
         return 0, 0, []
     d = msg.data.extract_all()
-    o = [safe_ord(x) for x in bitcoin.bin_sha256(d)]
+    o = [safe_ord(x) for x in pybitcoin.bin_sha256(d)]
     return 1, msg.gas - gas_cost, o
 
 
@@ -74,7 +74,7 @@ def proc_ripemd160(ext, msg):
     if msg.gas < gas_cost:
         return 0, 0, []
     d = msg.data.extract_all()
-    o = [0] * 12 + [safe_ord(x) for x in bitcoin.ripemd.RIPEMD160(d).digest()]
+    o = [0] * 12 + [safe_ord(x) for x in pybitcoin.ripemd.RIPEMD160(d).digest()]
     return 1, msg.gas - gas_cost, o
 
 

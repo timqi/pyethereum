@@ -4,7 +4,7 @@ try:
 except:
     import sha3 as _sha3
     sha3_256 = lambda x: _sha3.sha3_256(x).digest()
-from bitcoin import privtopub
+from pybitcoin import privtopub
 import sys
 import rlp
 from rlp.sedes import big_endian_int, BigEndianInt, Binary
