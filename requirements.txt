@@ -1,4 +1,4 @@
-bitcoin
+pybitcoin
 pysha3
 PyYAML
 repoze.lru
